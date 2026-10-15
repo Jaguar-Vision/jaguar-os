@@ -1,78 +1,90 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { signIn } from "@/lib/auth";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { signIn, getCurrentUserProfile } from '@/lib/auth';
 
 export default function LoginPage() {
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");        
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setError('');
     setLoading(true);
 
     try {
-      await signIn(email, password);
-      router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.message || "Login failed");
+      const result = await signIn(email, password);
+      if (result.error) {
+        setError(result.error.message);
+        return;
+      }
+
+      const profile = await getCurrentUserProfile();
+      const role = profile?.role;
+
+      if (role === 'client') router.replace('/tasks');
+      else if (role === 'va' || role === 'senior_va') router.replace('/work');
+      else if (role === 'admin') router.replace('/admin');
+      else router.replace('/tasks');
+    } catch {
+      setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow">
-        <h1 className="text-2xl font-bold mb-6 text-center">Jaguar OS</h1>
+    <div className="min-h-screen bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center">
+      <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Jaguar OS</h1>
+          <p className="text-gray-600 mt-2">Virtual Assistant Platform</p>
+        </div>
 
-        <form onSubmit={handleLogin} className="space-y-4">
+        {error && (
+          <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleLogin} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium mb-1">Email</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="your@email.com"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="you@example.com"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
-
           <div>
-            <label className="block text-sm font-medium mb-1">Password</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
-
-          {error && <div className="bg-red-100 text-red-700 p-3 rounded">{error}</div>}
-
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50"
+            className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-400"
           >
-            {loading ? "Logging in..." : "Log In"}
+            {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
 
-        <p className="text-sm text-gray-600 mt-6 text-center">
-          Test accounts:<br/>
-          Client: anastasia@example.com / password123<br/>
-          VA: sarah@jaguar-os.local / password123<br/>
-          Admin: admin@jaguar-os.local / password123
-        </p>
+        <div className="mt-8 pt-6 border-t border-gray-200 text-xs text-gray-600 space-y-1">
+          <p><strong>Client:</strong> anastasia@example.com / password123</p>
+        </div>
       </div>
     </div>
   );
