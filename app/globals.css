@@ -1,26 +1,128 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --cream: #E7E7DF;
+  --cream-deep: #DCDCD2;
+  --ink: #000000;
+  --ink-soft: #3A3A36;
+  --rule: rgba(0, 0, 0, 0.2);
+  --font-heading: var(--font-bodoni), Georgia, serif;
+  --font-body: var(--font-jost), system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
 }
+
+/* Layout */
+.jo-shell { min-height: 100vh; background: var(--cream); }
+.jo-header { border-bottom: 1px solid var(--ink); }
+.jo-header-inner {
+  max-width: 1200px; margin: 0 auto; padding: 20px 32px;
+  display: flex; justify-content: space-between; align-items: center; gap: 24px;
+}
+.jo-wordmark { height: 36px; width: auto; display: block; }
+.jo-user { text-align: right; }
+.jo-user-email { font-size: 14px; margin: 0; }
+.jo-user-role {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink-soft); margin: 2px 0 0;
+}
+.jo-nav { border-bottom: 1px solid var(--rule); }
+.jo-nav-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 32px;
+  display: flex; gap: 36px;
+}
+.jo-nav a {
+  padding: 16px 0; font-size: 12px; letter-spacing: 0.2em;
+  text-transform: uppercase; text-decoration: none; color: var(--ink);
+  border-bottom: 2px solid transparent;
+}
+.jo-nav a:hover { border-bottom-color: var(--rule); }
+.jo-nav a.is-active { border-bottom-color: var(--ink); }
+.jo-main { max-width: 1200px; margin: 0 auto; padding: 56px 32px 80px; }
+
+/* Buttons */
+.jo-btn {
+  background: transparent; color: var(--ink); border: 1px solid var(--ink);
+  padding: 10px 20px; font-family: var(--font-body); font-size: 12px;
+  letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer;
+}
+.jo-btn:hover { background: var(--ink); color: var(--cream); }
+.jo-btn-solid { background: var(--ink); color: var(--cream); }
+.jo-btn-solid:hover { background: transparent; color: var(--ink); }
+
+/* Page heading */
+.jo-page-head { margin-bottom: 48px; }
+.jo-eyebrow {
+  font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--ink-soft); margin: 0 0 12px;
+}
+.jo-title {
+  font-family: var(--font-heading); font-weight: 400;
+  font-size: 48px; line-height: 1.1; margin: 0;
+}
+.jo-title em { font-style: italic; }
+.jo-lede { font-size: 16px; color: var(--ink-soft); margin: 12px 0 0; }
+
+/* Section headings */
+.jo-section { margin-bottom: 56px; }
+.jo-section-title {
+  font-family: var(--font-heading); font-weight: 400; font-size: 26px;
+  margin: 0 0 20px; padding-bottom: 12px; border-bottom: 1px solid var(--ink);
+}
+
+/* Metrics */
+.jo-metrics {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 32px; margin-bottom: 56px;
+}
+.jo-metric { border-top: 1px solid var(--ink); padding-top: 16px; }
+.jo-metric-label {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink-soft); margin: 0;
+}
+.jo-metric-value {
+  font-family: var(--font-heading); font-size: 56px; line-height: 1;
+  margin: 12px 0 0;
+}
+
+/* Lists */
+.jo-list { list-style: none; margin: 0; padding: 0; }
+.jo-row {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 24px; padding: 20px 0; border-top: 1px solid var(--rule);
+}
+.jo-row:last-child { border-bottom: 1px solid var(--rule); }
+.jo-row-title { font-size: 17px; margin: 0; }
+.jo-row-meta { font-size: 13px; color: var(--ink-soft); margin: 4px 0 0; }
+
+/* Pills */
+.jo-pill {
+  display: inline-block; padding: 4px 10px; font-size: 11px;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  border: 1px solid var(--ink); white-space: nowrap;
+}
+.jo-pill-solid { background: var(--ink); color: var(--cream); }
+.jo-pills { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+
+/* Table */
+.jo-table { width: 100%; border-collapse: collapse; }
+.jo-table th {
+  text-align: left; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  font-weight: 400; color: var(--ink-soft); padding: 12px 0; border-bottom: 1px solid var(--ink);
+}
+.jo-table td { padding: 16px 0; border-bottom: 1px solid var(--rule); font-size: 15px; }
+
+/* Profile */
+.jo-field { padding: 20px 0; border-top: 1px solid var(--rule); }
+.jo-field:last-child { border-bottom: 1px solid var(--rule); }
+.jo-field-label {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink-soft); margin: 0 0 6px;
+}
+.jo-field-value { font-size: 17px; margin: 0; }

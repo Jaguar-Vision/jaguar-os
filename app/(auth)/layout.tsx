@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { getCurrentSession, getCurrentUserProfile, signOut } from '@/lib/auth';
 
-// Which roles may open each page. Pages not listed here are open to any logged-in user.
+// Which roles may open each page. Pages not listed are open to any logged-in user.
 const ROUTE_ROLES: Record<string, string[]> = {
   '/tasks': ['client'],
   '/work': ['va', 'senior_va'],
@@ -17,6 +17,13 @@ function homeFor(role?: string) {
   if (role === 'admin') return '/admin';
   return '/tasks';
 }
+
+const navItems = [
+  { href: '/tasks', label: 'Tasks' },
+  { href: '/work', label: 'Work' },
+  { href: '/admin', label: 'Admin' },
+  { href: '/profile', label: 'Profile' },
+];
 
 export default function AuthLayout({
   children,
@@ -71,51 +78,32 @@ export default function AuthLayout({
 
   if (checking) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-gray-500">
-        Loading...
+      <div className="jo-shell" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <p className="jo-eyebrow">Loading</p>
       </div>
     );
   }
 
-  const navItems = [
-    { href: '/tasks', label: 'Tasks' },
-    { href: '/work', label: 'Work' },
-    { href: '/admin', label: 'Admin' },
-    { href: '/profile', label: 'Profile' },
-  ];
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Jaguar OS</h1>
-            <p className="text-sm text-gray-600">Virtual Assistant Platform</p>
+    <div className="jo-shell">
+      <header className="jo-header">
+        <div className="jo-header-inner">
+          <img src="/logo-wordmark.png" alt="Jaguar Vision" className="jo-wordmark" />
+          <div className="jo-user">
+            <p className="jo-user-email">{email}</p>
+            <p className="jo-user-role">{role}</p>
           </div>
-          <div className="flex items-center gap-6">
-            <div className="text-right">
-              <p className="text-sm font-medium text-gray-900">{email}</p>
-              <p className="text-xs text-gray-500 capitalize">{role}</p>
-            </div>
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
-            >
-              Logout
-            </button>
-          </div>
+          <button onClick={handleLogout} className="jo-btn">
+            Logout
+          </button>
         </div>
-        <nav className="bg-gray-50 border-t border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-8">
+        <nav className="jo-nav">
+          <div className="jo-nav-inner">
             {navItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                className={`py-4 px-1 border-b-2 text-sm font-medium ${
-                  pathname === item.href
-                    ? 'border-blue-600 text-blue-600'
-                    : 'border-transparent text-gray-700 hover:border-blue-500'
-                }`}
+                className={pathname === item.href ? 'is-active' : undefined}
               >
                 {item.label}
               </a>
@@ -123,7 +111,7 @@ export default function AuthLayout({
           </div>
         </nav>
       </header>
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">{children}</main>
+      <main className="jo-main">{children}</main>
     </div>
   );
 }
