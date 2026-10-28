@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { getCurrentSession, getCurrentUserProfile, signOut } from '@/lib/auth';
 
@@ -88,7 +89,9 @@ export default function AuthLayout({
     <div className="jo-shell">
       <header className="jo-header">
         <div className="jo-header-inner">
-          <img src="/logo-wordmark.png" alt="Jaguar Vision" className="jo-wordmark" />
+          <Link href="/tasks" aria-label="Jaguar Vision home">
+            <img src="/logo-wordmark.png" alt="Jaguar Vision" className="jo-wordmark" />
+          </Link>
           <div className="jo-user">
             <p className="jo-user-email">{email}</p>
             <p className="jo-user-role">{role}</p>
@@ -100,13 +103,13 @@ export default function AuthLayout({
         <nav className="jo-nav">
           <div className="jo-nav-inner">
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.href}
                 href={item.href}
                 className={pathname === item.href ? 'is-active' : undefined}
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
           </div>
         </nav>

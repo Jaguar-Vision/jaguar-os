@@ -25,7 +25,7 @@ body {
   max-width: 1200px; margin: 0 auto; padding: 20px 32px;
   display: flex; justify-content: space-between; align-items: center; gap: 24px;
 }
-.jo-wordmark { height: 36px; width: auto; display: block; }
+.jo-wordmark { height: 110px; width: auto; display: block; }
 .jo-user { text-align: right; }
 .jo-user-email { font-size: 14px; margin: 0; }
 .jo-user-role {
