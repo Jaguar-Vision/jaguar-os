@@ -90,7 +90,7 @@ export default function AuthLayout({
       <header className="jo-header">
         <div className="jo-header-inner">
           <Link href="/tasks" aria-label="Jaguar Vision home">
-            <img src="/logo-wordmark.png" alt="Jaguar Vision" className="jo-wordmark" />
+            <img src="/logo-mark.png" alt="Jaguar Vision" className="jo-mark" />
           </Link>
           <div className="jo-user">
             <p className="jo-user-email">{email}</p>
